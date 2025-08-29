@@ -8,13 +8,12 @@ use esp_hal::{
     time::{Duration, Instant},
 };
 
-// You need a panic handler. Usually, you you would use esp_backtrace, panic-probe, or
-// something similar, but you can also bring your own like this:
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
     esp_hal::system::software_reset()
 }
 
+// Add the esp application descriptor.
 esp_bootloader_esp_idf::esp_app_desc!();
 
 #[main]
@@ -22,7 +21,7 @@ fn main() -> ! {
     let config = esp_hal::Config::default().with_cpu_clock(CpuClock::max());
     let peripherals = esp_hal::init(config);
 
-    // Set GPIO0 as an output, and set its state high initially.
+    // Set GPIO15 (USER LED) as an output, and set its state high initially.
     let mut led = Output::new(peripherals.GPIO15, Level::High, OutputConfig::default());
 
     loop {
